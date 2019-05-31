@@ -192,19 +192,20 @@ class DatasheetView(QMainWindow):
             self.notesDisplay.addItems(self.notesDB)
             self.notesArea.clear()
 
-    def populatePDF(self, pdfPath, pageNumber):
+    def populatePDF(self, pdfPath, pageNumber: int):
 
         if pdfPath:
-            self.document = PDFContext(pdfPath, pageNumber)
+            self.myPdfContext = PDFContext(pdfPath, pageNumber)
             
-            ToC = self.document.getToC()
+            # get table of context
+            ToC = self.myPdfContext.getToC()
             ToC_headings_list = [x[1] for x in ToC]
+            
             self.ToCListView.clear()
             self.ToCListView.addItems(ToC_headings_list)
 
             # display page in main view
-            self.document.openPDF(pdfPath, pageNumber)
-            self.SVGString = self.document.getRender(self.document.currentPageNumber)
+            self.SVGString = self.myPdfContext.getSvgAtPage(pageNumber)
 
             # set filename of current PDF
             self.pdfName = path.split(pdfPath)[1].split('.')[0]

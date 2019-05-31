@@ -8,10 +8,6 @@ class PDFContext():
 
     def __init__(self, pdfPath = None, pageNumber = 1):
 
-        self.openPDF(pdfPath, pageNumber)
-
-    def openPDF(self, pdfPath, pageNumber = 1):
-
         self.pdfPath = pdfPath
         self.currentPageNumber = pageNumber
 
@@ -19,9 +15,6 @@ class PDFContext():
         print("Fitz to open"  + str(pdfPath))
         self.document = fitz.open(pdfPath)   
         
-        # SVGrender = self.getRender(self.currentPageNumber)
-        return True
-
     def getToC(self):
         
         if self.document:
@@ -36,11 +29,13 @@ class PDFContext():
         
         return None
 
-    def getRender(self, page):
+    def getSvgAtPage(self, page: int) -> str:
 
         self.loadedPage = self.document.loadPage(page)
-        SVGImage = self.loadedPage.getSVGimage(matrix = fitz.Identity)
-        return SVGImage
+        
+        SvgImageString = self.loadedPage.getSVGimage(matrix=fitz.Identity)
+        
+        return SvgImageString
         
     def getLength(self):
 
