@@ -5,7 +5,7 @@ from PySide2 import (
 from PySide2.QtWidgets import (
     QMainWindow, QDialog, QHBoxLayout, QVBoxLayout, QGroupBox, QSplitter, 
     QWidget, QLabel, QFrame, QMenuBar, QAction, QMenu, QTextEdit, QLineEdit,
-    QListWidget, QDockWidget, QToolBar, QToolBox, QTabWidget, QTabBar
+    QListWidget, QDockWidget, QToolBar, QToolBox, QTabWidget, QTabBar, QScrollArea
 )
 from PySide2.QtCore import Qt
 from PySide2.QtGui import *
@@ -108,9 +108,12 @@ class DatasheetView(QMainWindow):
         # set right-side view -- SVG Viewer
         self.mainDisplay = QSvgWidget()
 
+        self.mainScroller = QScrollArea(self)
+        self.mainScroller.setWidget(self.mainDisplay)
+        self.mainScroller.setWidgetResizable(True)
         
         self.vBoxMain = QVBoxLayout()
-        self.vBoxMain.addWidget(self.mainDisplay)
+        self.vBoxMain.addWidget(self.mainScroller)
 
         self.notesArea = QLineEdit()
         self.notesArea.setPlaceholderText("Add a note about this page...")
@@ -197,7 +200,7 @@ class DatasheetView(QMainWindow):
         if pdfPath:
             self.myPdfContext = PDFContext(pdfPath, pageNumber)
             
-            # get table of context
+            # get table of contents
             ToC = self.myPdfContext.getToC()
             ToC_headings_list = [x[1] for x in ToC]
             
