@@ -1,4 +1,5 @@
-from PySide2.QtWidgets import QScrollArea, QVBoxLayout, QWidget
+from PySide2 import QtCore, QtSvg, QtWidgets, QtGui
+from PySide2.QtWidgets import QVBoxLayout, QWidget
 from PySide2.QtSvg import QSvgWidget
 
 class QDatasheetPageDisplayWidget(QSvgWidget):
@@ -14,7 +15,10 @@ class QDatasheetPageDisplayWidget(QSvgWidget):
         
         # maintain two concurrent QSvgWidgets; current page, other page
         self.current = QSvgWidget(self)
+        self.current.setFixedHeight(400)
+
         self.other = QSvgWidget(self)
+        self.other.setFixedHeight(400)
 
         self.collection = []    # unused for now
 
@@ -22,12 +26,13 @@ class QDatasheetPageDisplayWidget(QSvgWidget):
         # add svg widgets to the layout
         self.layout.addWidget(self.current)
         self.layout.addWidget(self.other)
+
         self.setLayout(self.layout)
 
 
     def render(self, svgPaths: list):
         """
-        draw given svg pages on the widgets
+        draw given svg images on the widgets
         """
 
         if len(svgPaths) == 1:

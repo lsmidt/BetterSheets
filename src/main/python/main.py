@@ -108,15 +108,12 @@ class DatasheetView(QMainWindow):
 
         # set right-side view -- SVG Viewer
         self.mainDisplay = QDatasheetPageDisplayWidget()
-        self.mainDisplay.render(["/Users/louissmidt/Documents/BetterSheets/src/main/files/drv8704-page-1.svg", "/Users/louissmidt/Documents/BetterSheets/src/main/files/drv8704-page-1.svg"])
-
-
-        self.vBoxScrollingLayout = QVBoxLayout()
-        self.vBoxScrollingLayout.addWidget(self.mainDisplay)
+        self.mainDisplay.render(["/Users/louissmidt/Documents/BetterSheets/src/main/files/drv8704-page-1.svg","/Users/louissmidt/Documents/BetterSheets/src/main/files/drv8704-page-1.svg"])
 
         self.mainScroller = QScrollArea(self)
         self.mainScroller.setWidget(self.mainDisplay)
         self.mainScroller.setWidgetResizable(True)
+        self.mainScroller.setFixedHeight(400)
         
         self.vBoxMain = QVBoxLayout()
         self.vBoxMain.addWidget(self.mainScroller)
