@@ -3,7 +3,7 @@ import fitz
 
 class PDFContext():
     """
-    Represents an opened PDF 
+    Represents an opened PDF and the data structures that enable its lifecycle 
     """
 
     def __init__(self, pdfPath = None, pageNumber = 1):

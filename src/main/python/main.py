@@ -15,6 +15,7 @@ import sys, os
 from os import path, mkdir
 
 from src.main.python.PDFContext import PDFContext
+from src.main.python.QDatasheetDisplay import QDatasheetPageDisplayWidget
 
 class DatasheetView(QMainWindow):
 
@@ -37,7 +38,7 @@ class DatasheetView(QMainWindow):
         self.setGeometry(self.left, self.top, self.width, self.height)
         
         # window title
-        self.setWindowTitle("Hello")
+        self.setWindowTitle("BetterSheets")
 
 
         # sets up main layout -- splitters
@@ -106,7 +107,12 @@ class DatasheetView(QMainWindow):
 
 
         # set right-side view -- SVG Viewer
-        self.mainDisplay = QSvgWidget()
+        self.mainDisplay = QDatasheetPageDisplayWidget()
+        self.mainDisplay.render(["/Users/louissmidt/Documents/BetterSheets/src/main/files/drv8704-page-1.svg", "/Users/louissmidt/Documents/BetterSheets/src/main/files/drv8704-page-1.svg"])
+
+
+        self.vBoxScrollingLayout = QVBoxLayout()
+        self.vBoxScrollingLayout.addWidget(self.mainDisplay)
 
         self.mainScroller = QScrollArea(self)
         self.mainScroller.setWidget(self.mainDisplay)
@@ -139,10 +145,9 @@ class DatasheetView(QMainWindow):
 
 
 
-
     def initUIToolbar(self):
 
-        mainMenu = self.menuBar() # get the menu bar already in use by this QMainWindow class
+        mainMenu = self.menuBar() # get the menu bar already in use by this QMainWindow subclass
         
         fileMenu = mainMenu.addMenu("File")
         editMenu = mainMenu.addMenu("Edit")
@@ -179,6 +184,7 @@ class DatasheetView(QMainWindow):
 
         if triggered_action == quitAction:
             self.quitApp()
+
 
     def quitApp(self):
         self.close()
@@ -235,7 +241,7 @@ class DatasheetView(QMainWindow):
         return file_loc
 
 
-            
+    
 
             
 
