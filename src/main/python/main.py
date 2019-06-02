@@ -109,12 +109,12 @@ class DatasheetView(QMainWindow):
 
         # set right-side view -- SVG Viewer
         self.mainDisplay = QDatasheetPageDisplayWidget(self.myPdfContext)
-        self.mainDisplay.renderPages(1, 4)
+        self.mainDisplay.renderPages(1, 14)
 
         self.mainScroller = QScrollArea(self)
         self.mainScroller.setWidget(self.mainDisplay)
         self.mainScroller.setWidgetResizable(True)
-        self.mainScroller.setFixedHeight(400)
+        # self.mainScroller.setFixedHeight()
         
         self.vBoxMain = QVBoxLayout()
         self.vBoxMain.addWidget(self.mainScroller)
@@ -209,16 +209,13 @@ class DatasheetView(QMainWindow):
 
 
 
-
-
-
 if __name__ == '__main__':
     appctxt = ApplicationContext()       # 1. Instantiate ApplicationContext
     
     assetPath = os.path.abspath("src/main/assets/drv8704.pdf")
     print(assetPath)
 
-    window = DatasheetView(assetPath, [1])
+    window = DatasheetView(assetPath, [1, 2, 3])
 
     exit_code = appctxt.app.exec_()      # 2. Invoke appctxt.app.exec_()
     sys.exit(exit_code)

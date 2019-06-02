@@ -13,7 +13,8 @@ class QDatasheetPageDisplayWidget(QSvgWidget):
     def __init__(self, pdfContext: PDFContext):
         
         super().__init__()
-        self.initUI()
+
+        self.collection = []        
 
         self.myPDFContext = pdfContext
 
@@ -21,8 +22,6 @@ class QDatasheetPageDisplayWidget(QSvgWidget):
     def initUI(self):
 
         self.layout = QVBoxLayout()
-
-        self.collection = [] 
 
         # add svg widgets to the layout
         for widget in self.collection:
