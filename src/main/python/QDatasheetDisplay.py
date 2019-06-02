@@ -1,36 +1,50 @@
 from PySide2 import QtCore, QtSvg, QtWidgets, QtGui
 from PySide2.QtWidgets import QVBoxLayout, QWidget
 from PySide2.QtSvg import QSvgWidget
+import os.path
+
+from src.main.python.PDFContext import PDFContext
 
 class QDatasheetPageDisplayWidget(QSvgWidget):
     """
     Represents the physical rendering of a PDFContext object
     """
 
-    def __init__(self):
+    def __init__(self, pdfContext: PDFContext):
         
         super().__init__()
+        self.initUI()
+
+        self.myPDFContext = pdfContext
+
+
+    def initUI(self):
 
         self.layout = QVBoxLayout()
         
         # maintain two concurrent QSvgWidgets; current page, other page
-        self.current = QSvgWidget(self)
-        self.current.setFixedHeight(400)
+        # self.current = QSvgWidget(self)
+        # self.current.setFixedHeight(400)
 
-        self.other = QSvgWidget(self)
-        self.other.setFixedHeight(400)
+        # self.other = QSvgWidget(self)
+        # self.other.setFixedHeight(400)
 
-        self.collection = []    # unused for now
+        self.collection = [] 
+
+        for widget in self.collection:
+            widget.setFixedHeight(400)
+            self.layout.addWidget(widget)
+
 
 
         # add svg widgets to the layout
-        self.layout.addWidget(self.current)
-        self.layout.addWidget(self.other)
+        # self.layout.addWidget(self.current)
+        # self.layout.addWidget(self.other)
 
         self.setLayout(self.layout)
 
 
-    def render(self, svgPaths: list):
+    def renderPaths(self, svgPaths: list):
         """
         draw given svg images on the widgets
         """
@@ -46,6 +60,33 @@ class QDatasheetPageDisplayWidget(QSvgWidget):
 
 
         #TODO: make this class compatible with generalized n-pages
+
+    def renderPages(self, start, stop):
+        """
+        draw the given page range [start, stop] of PDFContext on the widgets
+        """
+        self.directory = self.myPDFContext.directory
+
+        self.myPDFContext.loadPages(range(start, stop + 1))
+
+        for page in range(start, stop + 1):        # range function is not inclusive
+            
+            pagePath = os.path.join(self.directory, f"{page}.svg")
+            print(f"attempted to access page at path: {page}")
+            
+            page = QSvgWidget()
+            page.setFixedHeight(400)
+            page.load(pagePath)
+            
+            self.collection.append(page)
+
+        self.initUI()   # re-init the UI after updating collection size
+
+        
+
+
+    
+
 
 
 

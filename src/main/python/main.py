@@ -19,14 +19,15 @@ from src.main.python.QDatasheetDisplay import QDatasheetPageDisplayWidget
 
 class DatasheetView(QMainWindow):
 
-    def __init__(self, pdfPath=None, pageNumber=1):
+    def __init__(self, pdfPath=None, openPages=[1]):
         
         super().__init__()
 
-        # initialize data files
-        # self.fileStore = path.join(path.curdir, "/files")
-        # mkdir(self.fileStore)
-        self.svgFiles = []
+        if pdfPath:
+            self.myPdfContext = PDFContext(pdfPath, openPages)
+
+        # store diretory for debugging purposes
+        self.svgDirectory = self.myPdfContext.directory
 
 
         # window dimensions
@@ -45,8 +46,7 @@ class DatasheetView(QMainWindow):
         self.initUILayout()  
         self.initUIToolbar()
 
-        self.populatePDF(pdfPath, pageNumber)
-
+        # self.initPdfViewer()  # must be called after initUI to ensure PDFContext object exists
         self.show()
 
 
@@ -107,8 +107,9 @@ class DatasheetView(QMainWindow):
 
 
         # set right-side view -- SVG Viewer
-        self.mainDisplay = QDatasheetPageDisplayWidget()
-        self.mainDisplay.render(["/Users/louissmidt/Documents/BetterSheets/src/main/files/drv8704-page-1.svg","/Users/louissmidt/Documents/BetterSheets/src/main/files/drv8704-page-1.svg"])
+        self.mainDisplay = QDatasheetPageDisplayWidget(self.myPdfContext)
+        # self.mainDisplay.renderPaths(["/Users/louissmidt/Documents/BetterSheets/src/main/files/drv8704-page-1.svg","/Users/louissmidt/Documents/BetterSheets/src/main/files/drv8704-page-1.svg"])
+        self.mainDisplay.renderPages(1, 4)
 
         self.mainScroller = QScrollArea(self)
         self.mainScroller.setWidget(self.mainDisplay)
@@ -138,10 +139,6 @@ class DatasheetView(QMainWindow):
         self.setCentralWidget(self.leftRightSplit)
 
 
-
-
-
-
     def initUIToolbar(self):
 
         mainMenu = self.menuBar() # get the menu bar already in use by this QMainWindow subclass
@@ -164,8 +161,6 @@ class DatasheetView(QMainWindow):
         self.toolBar.addAction(saveAction)
         self.toolBar.addAction(copyAction)
         
-
-
 
     def contextMenuEvent(self, event):
         # return super().contextMenuEvent(event)
@@ -198,44 +193,21 @@ class DatasheetView(QMainWindow):
             self.notesDisplay.addItems(self.notesDB)
             self.notesArea.clear()
 
-    def populatePDF(self, pdfPath, pageNumber: int):
+    def initPdfViewer(self, openPages: int):            
+        pass
 
-        if pdfPath:
-            self.myPdfContext = PDFContext(pdfPath, pageNumber)
-            
-            # get table of contents
-            ToC = self.myPdfContext.getToC()
-            ToC_headings_list = [x[1] for x in ToC]
-            
-            self.ToCListView.clear()
-            self.ToCListView.addItems(ToC_headings_list)
-
-            # display page in main view
-            self.SVGString = self.myPdfContext.getSvgAtPage(pageNumber)
-
-            # set filename of current PDF
-            self.pdfName = path.split(pdfPath)[1].split('.')[0]
-
-            # write current page to .svg file
-            file_loc = self._writeSVGToFile_(self.pdfName, pageNumber, self.SVGString)
-
-            # open the file we just wrote to
-            self.mainDisplay.load(file_loc)
-            
-
-    @staticmethod
-    def _writeSVGToFile_(pdfName: str, pageNumber: int, svg_string: str) -> str:
-        """
-        return the full file path we just wrote
-        """
         
-        file_loc = f"./src/main/files/{pdfName}-page-{pageNumber}.svg"
+            
+    def initToC(self):
 
-        with open(file_loc , 'w') as f:  
-            f.write(svg_string)
+        # get table of contents
+        ToC = self.myPdfContext.getToC()
+        ToC_headings_list = [x[1] for x in ToC]
+        
+        self.ToCListView.clear()
+        self.ToCListView.addItems(ToC_headings_list)
 
-        print("File_loc: ", file_loc)
-        return file_loc
+
 
 
     
@@ -257,7 +229,7 @@ if __name__ == '__main__':
     assetPath = os.path.abspath("src/main/assets/drv8704.pdf")
     print(assetPath)
 
-    window = DatasheetView(assetPath, 1)
+    window = DatasheetView(assetPath, [1])
 
     exit_code = appctxt.app.exec_()      # 2. Invoke appctxt.app.exec_()
     sys.exit(exit_code)
