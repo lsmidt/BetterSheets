@@ -62,6 +62,7 @@ class DatasheetView(QMainWindow):
         self.groupA.setTitle("Dynamic Veiw")
         self.groupA.setLayout(self.vBoxA)
         
+
         # set left-side, Static View
         self.staticViewDisplay = QLabel()
         
@@ -85,8 +86,8 @@ class DatasheetView(QMainWindow):
         self.toolsTabView.setTabsClosable(True)
         self.toolsTabView.setMovable(True)
         self.toolsTabView.setDocumentMode(True)
-
         # self.toolsTabView.setTabBarAutoHide(True)
+
 
         # add attribute for storing page notes
         self.notesDB = []
@@ -108,7 +109,6 @@ class DatasheetView(QMainWindow):
 
         # set right-side view -- SVG Viewer
         self.mainDisplay = QDatasheetPageDisplayWidget(self.myPdfContext)
-        # self.mainDisplay.renderPaths(["/Users/louissmidt/Documents/BetterSheets/src/main/files/drv8704-page-1.svg","/Users/louissmidt/Documents/BetterSheets/src/main/files/drv8704-page-1.svg"])
         self.mainDisplay.renderPages(1, 4)
 
         self.mainScroller = QScrollArea(self)
@@ -206,17 +206,6 @@ class DatasheetView(QMainWindow):
         
         self.ToCListView.clear()
         self.ToCListView.addItems(ToC_headings_list)
-
-
-
-
-    
-
-            
-
-            
-            
-
 
 
 

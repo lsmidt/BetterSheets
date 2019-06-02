@@ -21,25 +21,13 @@ class QDatasheetPageDisplayWidget(QSvgWidget):
     def initUI(self):
 
         self.layout = QVBoxLayout()
-        
-        # maintain two concurrent QSvgWidgets; current page, other page
-        # self.current = QSvgWidget(self)
-        # self.current.setFixedHeight(400)
-
-        # self.other = QSvgWidget(self)
-        # self.other.setFixedHeight(400)
 
         self.collection = [] 
 
+        # add svg widgets to the layout
         for widget in self.collection:
             widget.setFixedHeight(400)
             self.layout.addWidget(widget)
-
-
-
-        # add svg widgets to the layout
-        # self.layout.addWidget(self.current)
-        # self.layout.addWidget(self.other)
 
         self.setLayout(self.layout)
 
