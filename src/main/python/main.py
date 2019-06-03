@@ -45,9 +45,12 @@ class DatasheetView(QMainWindow):
         # sets up main layout -- splitters
         self.initUILayout()  
         self.initUIToolbar()
+        self.initToC()
 
         # self.initPdfViewer()  # must be called after initUI to ensure PDFContext object exists
         self.show()
+
+        print(self.mainDisplay.getVisibleChild())
 
 
     def initUILayout(self):
@@ -106,15 +109,16 @@ class DatasheetView(QMainWindow):
 
 
 
-
         # set right-side view -- SVG Viewer
         self.mainDisplay = QDatasheetPageDisplayWidget(self.myPdfContext)
-        self.mainDisplay.renderPages(1, 14)
+        self.mainDisplay.renderPages(1, 4)
 
         self.mainScroller = QScrollArea(self)
         self.mainScroller.setWidget(self.mainDisplay)
         self.mainScroller.setWidgetResizable(True)
-        # self.mainScroller.setFixedHeight()
+        self.mainScroller.setBackgroundRole(QtGui.QPalette.Dark)
+        self.mainScroller.setFixedHeight(800)
+        print(self.mainScroller.viewport().childrenRect())
         
         self.vBoxMain = QVBoxLayout()
         self.vBoxMain.addWidget(self.mainScroller)
@@ -154,8 +158,6 @@ class DatasheetView(QMainWindow):
         copyAction = editMenu.addAction("Copy")
         resetAction = LayoutMenu.addAction("Reset Default Layout")
 
-        # mainMenu.setNativeMenuBar(True)
-        # mainMenu.show()
 
         self. toolBar = self.addToolBar("Tools")
         self.toolBar.addAction(saveAction)
