@@ -79,7 +79,7 @@ class QDatasheetPageDisplayWidget(QSvgWidget):
         self.origin = self.window.center()
 
         for i in range(1, 4):
-            print(self.findChild(QSvgWidget, f"page{i}").isVisible())
+            print(self.findChild(QSvgWidget, f"page{i}"))
 
         return self.childAt(self.origin.x(), self.origin.y())
 

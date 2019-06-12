@@ -109,7 +109,7 @@ class DatasheetView(QMainWindow):
 
 
 
-        # set right-side view -- SVG Viewer
+        # set up main viewport
         self.mainDisplay = QDatasheetPageDisplayWidget(self.myPdfContext)
         self.mainDisplay.renderPages(1, 4)
 
@@ -118,7 +118,20 @@ class DatasheetView(QMainWindow):
         self.mainScroller.setWidgetResizable(True)
         self.mainScroller.setBackgroundRole(QtGui.QPalette.Dark)
         self.mainScroller.setFixedHeight(800)
+
         print(self.mainScroller.viewport().childrenRect())
+
+        # set up document tools
+
+        self.hBoxDocTools = QHBoxLayout()
+
+        self.searchLabel = QLabel("Search: ")
+        self.searchBox = QLineEdit()
+        self.searchBox.setPlaceholderText("Search")
+
+        # self. 
+        
+
         
         self.vBoxMain = QVBoxLayout()
         self.vBoxMain.addWidget(self.mainScroller)
